@@ -199,10 +199,10 @@ if user_query:
                 if "error" in eval_results:
                     st.caption(f"⚠️ *Evaluation skipped for this chunk: {eval_results['error']}*")
                 else:
-                    # Create 3 mini columns for the metrics below the text block
-                    m1, m2 = st.columns(2)
+                    m1, m2, m3 = st.columns(3)
                     m1.metric("ROUGE-1", f"{eval_results['rouge1']:.4f}")
                     m2.metric("ROUGE-2", f"{eval_results['rouge2']:.4f}")
+                    m3.metric("ROUGE-L", f"{eval_results['rougeL']: .4f}")
                 st.markdown("---")
 
         # 2. Step 2: Build the context string from RAG outputs
@@ -231,11 +231,11 @@ if user_query:
                 if "error" in gen_eval_results:
                     st.caption(f"⚠️ *Evaluation skipped for this chunk: {gen_eval_results['error']}*")
                 else:
-                    # Create 3 mini columns for the metrics below the text block
-                    m1, m2 = st.columns(2)
+                    m1, m2, m3 = st.columns(3)
                     m1.metric("ROUGE-1", f"{gen_eval_results['rouge1']:.4f}")
                     m2.metric("ROUGE-2", f"{gen_eval_results['rouge2']:.4f}")
-                show_evidence_check(top_hits[0], generated_answer)
+                    m3.metric("ROUGE-L", f"{gen_eval_results['rougeL']: .4f}")
+
 
             except Exception as e:
                 st.error(f"An error occurred while running LangChain: {e}")

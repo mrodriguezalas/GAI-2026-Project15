@@ -16,7 +16,8 @@ client = OpenAI()
 # Configuration
 INPUT_PATH = "data/"
 OUTPUT_DIR = "src/"
-TARGET_CHUNK_SIZE = 200
+TARGET_CHUNK_SIZE = 2000  # Updated chunk size
+CHUNK_OVERLAP = 200       # Added chunk overlap (in characters)
 
 
 def run_embeddings():
@@ -54,37 +55,59 @@ def run_embeddings():
                 page_text = page.extract_text() or ""
                 raw_lines = page_text.splitlines()
                 
-                current_chunk_text = ""
-                start_line = 1
+                current_lines = []
                 
                 for line_idx, line in enumerate(raw_lines, start=1):
                     clean_line = line.strip()
                     if not clean_line:
                         continue
                         
-                    if len(current_chunk_text) + len(clean_line) > TARGET_CHUNK_SIZE and current_chunk_text:
-                        chunk_to_save = current_chunk_text.strip()
+                    # Calculate potential length if we add the current line
+                    current_text = "\n".join([l[1] for l in current_lines])
+                    if current_text:
+                        potential_len = len(current_text) + 1 + len(clean_line)
+                    else:
+                        potential_len = len(clean_line)
+                        
+                    if potential_len > TARGET_CHUNK_SIZE and current_lines:
+                        chunk_to_save = current_text.strip()
                         documents.append(chunk_to_save)
+                        
+                        start_line = current_lines[0][0]
+                        end_line = current_lines[-1][0]
                         
                         metadata.append({
                             "pdf_name": pdf_filename,  
                             "page": page_num,
-                            "lines": f"{start_line}-{line_idx-1}" if start_line != (line_idx-1) else f"{start_line}",
+                            "lines": f"{start_line}-{end_line}" if start_line != end_line else f"{start_line}",
                             "text": chunk_to_save  
                         })
-                        current_chunk_text = clean_line + "\n"
-                        start_line = line_idx
+                        
+                        # Slide the window back to create character overlap
+                        while current_lines:
+                            current_lines.pop(0)
+                            if not current_lines:
+                                break
+                            remaining_text = "\n".join([l[1] for l in current_lines])
+                            if len(remaining_text) <= CHUNK_OVERLAP:
+                                break
+                                
+                        current_lines.append((line_idx, clean_line))
                     else:
-                        current_chunk_text += clean_line + "\n"
+                        current_lines.append((line_idx, clean_line))
                 
-                if current_chunk_text.strip():
-                    chunk_to_save = current_chunk_text.strip()
+                # Handle remaining trailing text on the page
+                if current_lines:
+                    chunk_to_save = "\n".join([l[1] for l in current_lines]).strip()
                     documents.append(chunk_to_save)
+                    
+                    start_line = current_lines[0][0]
+                    end_line = current_lines[-1][0]
                     
                     metadata.append({
                         "pdf_name": pdf_filename,
                         "page": page_num,
-                        "lines": f"{start_line}-{len(raw_lines)}" if start_line != len(raw_lines) else f"{start_line}",
+                        "lines": f"{start_line}-{end_line}" if start_line != end_line else f"{start_line}",
                         "text": chunk_to_save  
                     })
                     
@@ -97,12 +120,10 @@ def run_embeddings():
         print("No text data extracted. Exiting.")
         exit()
 
-
     for idx, doc in enumerate(documents):
         tokens = len(enc.encode(doc))
         if tokens > 8192:
             print(f"❌ TOO LARGE: Chunk {idx} in {metadata[idx]['pdf_name']} (Page {metadata[idx]['page']}) → {tokens} tokens")
-
 
     def embed_texts(texts):
         response = client.embeddings.create(
@@ -125,7 +146,7 @@ def run_embeddings():
     faiss.write_index(index, os.path.join(OUTPUT_DIR, "pdf_chunks.index"))
     np.save(os.path.join(OUTPUT_DIR, "pdf_metadata.npy"), np.array(metadata, dtype=object))
 
-    return (f"Success! FAISS index + metadata for {len(pdf_files)} files saved completely.")
+    return f"Success! FAISS index + metadata for {len(pdf_files)} files saved completely."
 
 if __name__ == "__main__":
     print("Running embeddings")
