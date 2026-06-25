@@ -11,6 +11,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 # Import the search function from your existing script
 from src.cosine_similarity import search
 from src.create_embedding import run_embeddings
+from src.evaluation import evaluate_response
 from src.prompt import RAG_prompt
 
 # Load environment variables
@@ -193,6 +194,15 @@ if user_query:
                     f"**L2 distance:** {match['distance_score']:.4f} — lower is better"
                 )
                 st.info(match['text'])
+
+                eval_results = evaluate_response(user_query, match['text'])
+                if "error" in eval_results:
+                    st.caption(f"⚠️ *Evaluation skipped for this chunk: {eval_results['error']}*")
+                else:
+                    # Create 3 mini columns for the metrics below the text block
+                    m1, m2 = st.columns(2)
+                    m1.metric("ROUGE-1", f"{eval_results['rouge1']:.4f}")
+                    m2.metric("ROUGE-2", f"{eval_results['rouge2']:.4f}")
                 st.markdown("---")
 
         # 2. Step 2: Build the context string from RAG outputs
@@ -217,6 +227,14 @@ if user_query:
                 # Output the synthesized answer
                 st.subheader("🤖 Generated Answer")
                 st.write(generated_answer)
+                gen_eval_results = evaluate_response(user_query, generated_answer)
+                if "error" in gen_eval_results:
+                    st.caption(f"⚠️ *Evaluation skipped for this chunk: {gen_eval_results['error']}*")
+                else:
+                    # Create 3 mini columns for the metrics below the text block
+                    m1, m2 = st.columns(2)
+                    m1.metric("ROUGE-1", f"{gen_eval_results['rouge1']:.4f}")
+                    m2.metric("ROUGE-2", f"{gen_eval_results['rouge2']:.4f}")
                 show_evidence_check(top_hits[0], generated_answer)
 
             except Exception as e:

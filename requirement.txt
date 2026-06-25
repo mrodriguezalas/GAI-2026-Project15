@@ -1,5 +1,7 @@
 pypdf
 pymupdf
+pandas
+rouge-score
 openai
 faiss-cpu
 numpy
