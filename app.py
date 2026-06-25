@@ -1,4 +1,5 @@
 import os
+import re
 import streamlit as st
 import dotenv
 
@@ -29,6 +30,107 @@ llm = ChatOpenAI(model="gpt-5.5", temperature=0)
 
 FOLDER_PATH = "data/"
 os.makedirs(FOLDER_PATH, exist_ok=True)
+
+
+@st.cache_data(show_spinner=False)
+def render_pdf_page_to_image(pdf_path: str, page_number: int, zoom: float = 3.0) -> bytes:
+    import fitz
+
+    page_number = int(page_number)
+    if page_number < 1:
+        raise ValueError("Page number must be 1 or greater.")
+
+    with fitz.open(pdf_path) as doc:
+        if page_number > doc.page_count:
+            raise ValueError(f"Page {page_number} is outside the PDF page range of 1-{doc.page_count}.")
+
+        page = doc.load_page(page_number - 1)
+        pixmap = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), alpha=False)
+        return pixmap.tobytes("png")
+
+
+def generated_answer_cites_more_than_top_match(generated_answer: str, top_match) -> bool:
+    cited_pages = set(re.findall(r"\bPage\s+(\d+)\b", generated_answer, flags=re.IGNORECASE))
+    cited_lines = {
+        line_range.replace(" ", "")
+        for line_range in re.findall(
+            r"\bLines?\s+(\d+(?:\s*-\s*\d+)?)\b",
+            generated_answer,
+            flags=re.IGNORECASE,
+        )
+    }
+
+    top_page = str(top_match.get("page", "")).strip()
+    top_lines = str(top_match.get("lines", "")).replace(" ", "")
+
+    return any(page != top_page for page in cited_pages) or any(lines != top_lines for lines in cited_lines)
+
+
+def show_pdf_page_image(image_bytes: bytes, caption: str):
+    try:
+        st.image(image_bytes, caption=caption, use_container_width=True)
+    except TypeError:
+        st.image(image_bytes, caption=caption, use_column_width=True)
+
+
+def show_evidence_check(top_match, generated_answer: str):
+    pdf_name = top_match.get("pdf_name", "Unknown PDF")
+    page_value = top_match.get("page")
+    lines_value = top_match.get("lines", "Unknown")
+    rank_value = top_match.get("rank", "Unknown")
+    distance_value = top_match.get("distance_score")
+    chunk_text = top_match.get("text", "")
+    distance_label = (
+        f"{distance_value:.4f}" if isinstance(distance_value, (int, float)) else "unavailable"
+    )
+
+    st.subheader("Evidence Check: Top Retrieved Result vs PDF Page")
+
+    left_col, right_col = st.columns(2)
+
+    with left_col:
+        st.markdown("#### Top Retrieved Chunk")
+        st.markdown(f"**PDF:** {pdf_name}")
+        st.markdown(f"**Page:** {page_value if page_value is not None else 'Missing'}")
+        st.markdown(f"**Extracted text lines:** {lines_value}")
+        st.markdown(f"**Rank:** {rank_value}")
+        st.caption(f"**L2 distance:** {distance_label} — lower is better")
+        st.info(chunk_text)
+
+    with right_col:
+        st.markdown("#### Rendered Source Page")
+        pdf_path = os.path.join(FOLDER_PATH, pdf_name)
+        caption = f"Rendered source page: {pdf_name}, page {page_value if page_value is not None else 'missing'}"
+        st.caption(caption)
+        st.caption("This is the original PDF page corresponding to the top retrieved chunk.")
+
+        if not os.path.exists(pdf_path):
+            st.warning(f"Source PDF not found: {pdf_path}")
+            return
+
+        if page_value is None:
+            st.warning("Missing page number in retrieved metadata.")
+            return
+
+        try:
+            page_number = int(page_value)
+        except (TypeError, ValueError):
+            st.warning(f"Invalid page number in retrieved metadata: {page_value}")
+            return
+
+        try:
+            image_bytes = render_pdf_page_to_image(pdf_path, page_number)
+            show_pdf_page_image(image_bytes, caption)
+        except Exception as e:
+            st.warning(f"Could not render source PDF page: {e}")
+
+    if generated_answer_cites_more_than_top_match(generated_answer, top_match):
+        st.info(
+            "The generated answer appears to cite additional evidence not shown in the top-1 comparison. "
+            "The current panel verifies only the top retrieved chunk. Check the retrieved chunks expander "
+            "for the remaining cited evidence."
+        )
+
 
 # -- Side bar to upload document--
 with st.sidebar:
@@ -81,10 +183,15 @@ if user_query:
         st.info("No matching chunks found in the database.")
     else:
         # Display the source documents in an expander
-        with st.expander("📄 View Retrieved Source Chunks"):
+        with st.expander("📄 View all retrieved chunks used as RAG context"):
             for match in top_hits:
                 st.markdown(f"### **[{match['pdf_name']}]**")
-                st.caption(f"**Rank:** {match['rank']} | **Page:** {match['page']} | **Lines:** {match['lines']}")
+                st.caption(
+                    f"**Rank:** {match['rank']} | "
+                    f"**Page:** {match['page']} | "
+                    f"**Extracted text lines:** {match['lines']} | "
+                    f"**L2 distance:** {match['distance_score']:.4f} — lower is better"
+                )
                 st.info(match['text'])
                 st.markdown("---")
 
@@ -110,6 +217,7 @@ if user_query:
                 # Output the synthesized answer
                 st.subheader("🤖 Generated Answer")
                 st.write(generated_answer)
+                show_evidence_check(top_hits[0], generated_answer)
 
             except Exception as e:
                 st.error(f"An error occurred while running LangChain: {e}")
