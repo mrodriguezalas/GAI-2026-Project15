@@ -5,3 +5,5 @@ numpy
 tiktoken
 python-dotenv
 streamlit
+langchain-core
+langchain-openai
