@@ -1,0 +1,4 @@
+.env
+pdf_chunks.index
+pdf_metadata.npy
+__pycache__
