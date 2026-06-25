@@ -35,11 +35,12 @@ def evaluate_response(user_question: str, generated_answer: str) -> dict:
     golden_answer = matched_rows.iloc[0]['gold_answer']
 
     # Calculate ROUGE-1 and ROUGE-2 Scores using rouge-score library exclusively
-    scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2'], use_stemmer=True)
+    scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
     rouge_results = scorer.score(golden_answer, generated_answer)
 
     return {
         "rouge1": rouge_results['rouge1'].fmeasure,
         "rouge2": rouge_results['rouge2'].fmeasure,
+        "rougeL": rouge_results['rougeL'].fmeasure,
         "golden_answer": golden_answer
     }

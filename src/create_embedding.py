@@ -16,7 +16,7 @@ client = OpenAI()
 # Configuration
 INPUT_PATH = "data/"
 OUTPUT_DIR = "src/"
-TARGET_CHUNK_SIZE = 1000  # Updated chunk size
+TARGET_CHUNK_SIZE = 2000  # Updated chunk size
 CHUNK_OVERLAP = 200       # Added chunk overlap (in characters)
 
 
