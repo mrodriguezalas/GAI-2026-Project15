@@ -7,3 +7,5 @@ python-dotenv
 streamlit
 langchain-core
 langchain-openai
+rouge-score
+bert-score

@@ -92,10 +92,13 @@ if user_query:
                 if "error" in eval_results:
                     st.caption(f"⚠️ *Evaluation skipped for this chunk: {eval_results['error']}*")
                 else:
-                    m1, m2, m3 = st.columns(3)
+                    m1, m2, m3, m4, m5, m6 = st.columns(6)
                     m1.metric("ROUGE-1", f"{eval_results['rouge1']:.4f}")
                     m2.metric("ROUGE-2", f"{eval_results['rouge2']:.4f}")
-                    m3.metric("ROUGE-L", f"{eval_results['rougeL']: .4f}")
+                    m3.metric("ROUGE-L", f"{eval_results['rougeL']:.4f}")
+                    m4.metric("BERT-P",  f"{eval_results['bert_precision']:.4f}")
+                    m5.metric("BERT-R",  f"{eval_results['bert_recall']:.4f}")
+                    m6.metric("BERT-F1", f"{eval_results['bert_f1']:.4f}")
                 st.markdown("---")
 
         # 2. Step 2: Build the context string from RAG outputs
@@ -124,11 +127,13 @@ if user_query:
                 if "error" in gen_eval_results:
                     st.caption(f"⚠️ *Evaluation skipped for this chunk: {gen_eval_results['error']}*")
                 else:
-                    m1, m2, m3 = st.columns(3)
+                    m1, m2, m3, m4, m5, m6 = st.columns(6)
                     m1.metric("ROUGE-1", f"{gen_eval_results['rouge1']:.4f}")
                     m2.metric("ROUGE-2", f"{gen_eval_results['rouge2']:.4f}")
-                    m3.metric("ROUGE-L", f"{gen_eval_results['rougeL']: .4f}")
-
+                    m3.metric("ROUGE-L", f"{gen_eval_results['rougeL']:.4f}")
+                    m4.metric("BERT-P",  f"{gen_eval_results['bert_precision']:.4f}")
+                    m5.metric("BERT-R",  f"{gen_eval_results['bert_recall']:.4f}")
+                    m6.metric("BERT-F1", f"{gen_eval_results['bert_f1']:.4f}")
 
             except Exception as e:
                 st.error(f"An error occurred while running LangChain: {e}")

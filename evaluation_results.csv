@@ -1,0 +1,365 @@
+q_num,paper,question,gold,generated,error,rouge1,rouge2,rougeL,bert_precision,bert_recall,bert_f1
+1,Attention Is All You Need,What problem does the Transformer solve compared to RNNs?,"RNNs are sequential and preclude parallelization during training. The Transformer relies entirely on self-attention, enabling full parallelization.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer addresses the fundamental constraint of RNNs’ sequential computation, which prevents parallelization within training examples, especially for longer sequences. It avoids recurrence and relies entirely on attention to model global dependencies, allowing significantly more parallelization.
+
+Source: Page 2, Line 8-23",,0.3429,0.0882,0.2571,0.829,0.9208,0.8725
+2,Attention Is All You Need,What are the three types of attention used in the Transformer?,"Encoder-decoder attention, encoder self-attention, and decoder self-attention.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer uses multi-head attention in three ways:
+1. Encoder-decoder attention
+2. Encoder self-attention
+3. Decoder self-attention
+
+Source: Page 5, Line 15-32",,0.383,0.2667,0.383,0.824,0.9168,0.8679
+3,Attention Is All You Need,What is the formula for Scaled Dot-Product Attention?,"Attention(Q, K, V) = softmax(QK^T / √dk) · V","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+Attention(Q, K, V) = softmax(QKᵀ / √dₖ)V
+
+Source: Page 4, Line 16",,0.4375,0.3333,0.4375,0.8289,0.927,0.8752
+4,Attention Is All You Need,Why do the authors scale by √dk in the attention formula?,"For large dk the dot products grow large, pushing softmax into regions with extremely small gradients. Dividing by √dk counteracts this.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The authors scale the dot products by \(1/\sqrt{d_k}\) because, for large \(d_k\), the dot products can grow large in magnitude, which pushes the softmax into regions with extremely small gradients. The scaling counteracts this effect.
+
+Source: Page 4, Line 25-30",,0.4737,0.2973,0.4474,0.8224,0.9209,0.8688
+5,Attention Is All You Need,How many attention heads do the Transformer models use?,h = 8 parallel attention heads.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer models use 8 attention heads.
+
+Source: Page 5, Line 12",,0.2222,0.08,0.2222,0.7946,0.8889,0.8391
+6,Attention Is All You Need,What is Multi-Head Attention and why is it used?,It allows the model to jointly attend to information from different representation subspaces at different positions.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+Multi-Head Attention consists of several attention layers, or “heads,” running in parallel. Each head applies attention to projected queries, keys, and values; the outputs of the heads are concatenated and projected to produce the final output.
+
+It is used because it allows the model to jointly attend to information from different representation subspaces at different positions. With a single attention head, averaging inhibits this. In the described work, 8 heads are used, with reduced dimensions per head so the total computational cost is similar to single-head attention with full dimensionality.
+
+Source: Page 4, Line 1-3; Page 5, Line 1-13",,0.2481,0.2362,0.2481,0.8081,0.9481,0.8725
+7,Attention Is All You Need,What positional encoding do the authors use?,"Sine and cosine functions of different frequencies, allowing the model to attend by relative positions.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The authors use sinusoidal positional encodings: sine and cosine functions of different frequencies, added to the input embeddings at the bottoms of the encoder and decoder stacks. Specifically:
+PE(pos, 2i) = sin(pos / 10000^(2i/dmodel))  
+PE(pos, 2i+1) = cos(pos / 10000^(2i/dmodel))
+
+Source: Page 6, Lines 10-24",,0.2632,0.1622,0.2105,0.7773,0.893,0.8311
+8,Attention Is All You Need,What BLEU score did the Transformer achieve on WMT 2014 English-to-German?,"28.4 BLEU, outperforming all previously reported models including ensembles.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer (big) achieved a BLEU score of 28.4 on WMT 2014 English-to-German. The base Transformer model achieved 27.3.
+
+Source: Page 8, Lines 12-13 and 24-28",,0.1923,0.04,0.1154,0.7994,0.8745,0.8353
+9,Attention Is All You Need,What BLEU score did the Transformer achieve on WMT 2014 English-to-French?,"41.0 BLEU, a new state of the art at less than 1/4 the training cost of the prior best model.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer big model achieved a BLEU score of 41.0 on WMT 2014 English-to-French.
+
+Source: Page 8, Line 30",,0.2593,0.0385,0.0741,0.8061,0.854,0.8293
+10,Attention Is All You Need,How many encoder and decoder layers does the base Transformer have?,N = 6 identical layers in both encoder and decoder.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The base Transformer has 6 encoder layers and 6 decoder layers.
+
+Source: Page 3, Line 5 and Line 14",,0.2632,0.0,0.2105,0.8162,0.9086,0.8599
+11,Attention Is All You Need,What is d_model in the base Transformer?,dmodel = 512,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+d_model is 512.
+
+Source: Page 3, Lines 10-12",,0.0909,0.0,0.0909,0.7815,0.8724,0.8244
+12,Attention Is All You Need,What regularization techniques are applied during training?,Residual dropout (Pdrop = 0.1) and label smoothing (ε_ls = 0.1).,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context. The context states that three types of regularization were employed during training, but it does not list or describe those techniques.
+
+Source: Page 7, Line 45",,0.0,0.0,0.0,0.8012,0.8125,0.8068
+13,Attention Is All You Need,How long did it take to train the big Transformer?,3.5 days on eight GPUs.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+It took 3.5 days to train the big Transformer on 8 P100 GPUs.
+
+Source: Page 8, Lines 25-28",,0.2778,0.1176,0.2778,0.8078,0.9461,0.8715
+14,Attention Is All You Need,What learning rate schedule is used?,"A custom schedule with linear warmup then decay proportional to the inverse square root of the step number, using warmup_steps.","Paper: 1706.03762v7-Attention_is_all_you_need.pdf; 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+For Attention Is All You Need, the learning rate increases linearly for the first 4,000 warmup steps, then decreases proportionally to the inverse square root of the step number, using:
+lrate = d_model^-0.5 · min(step_num^-0.5, step_num · warmup_steps^-1.5).
+
+For BERT, the learning rate uses warmup over the first 10,000 steps followed by linear decay.
+
+Source: Page 7, Line 34-43; Page 13, Line 63-68",,0.3063,0.2202,0.2703,0.794,0.8985,0.843
+15,Attention Is All You Need,What is the feed-forward network dimension d_ff in the base model?,dff = 2048,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The feed-forward network dimension \(d_{ff}\) in the base model is 2048.
+
+Source: Page 5, Line 47",,0.0667,0.0,0.0667,0.7739,0.8923,0.8289
+16,Attention Is All You Need,What task beyond translation is the Transformer tested on?,English constituency parsing.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer is tested on English constituency parsing beyond translation.
+
+Source: Page 9, Line 42-43",,0.2069,0.1481,0.2069,0.785,0.9138,0.8445
+17,Attention Is All You Need,What is the maximum path length between two positions in a self-attention layer?,O(1) — constant regardless of sequence length. (See Table 1.),"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The maximum path length between two positions in a self-attention layer is O(1).
+
+Source: Page 6, Lines 1-9",,0.1951,0.0513,0.1463,0.8119,0.8713,0.8405
+18,Attention Is All You Need,What is the main advantage of self-attention over recurrence in sequential operations?,Self-attention connects all positions with O(1) sequential operations vs O(n) for recurrence. (Table 1.),"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+Self-attention requires only a constant number of sequential operations, O(1), while recurrence requires O(n) sequential operations.
+
+Source: Page 6, Line 43-46",,0.3846,0.16,0.2308,0.8344,0.9095,0.8703
+19,Attention Is All You Need,What hardware was used to train the Transformer?,8 NVIDIA P100 GPUs.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The Transformer models were trained on one machine with 8 NVIDIA P100 GPUs.
+
+Source: Page 7, Line 29",,0.25,0.2,0.25,0.7974,0.9424,0.8638
+20,Attention Is All You Need,How does the decoder produce a probability distribution over vocabulary?,A softmax function converts the decoder output to predicted next-token probabilities.,"Paper: 1706.03762v7-Attention_is_all_you_need.pdf
+
+Answer:
+The decoder output is converted to predicted next-token probabilities using a learned linear transformation followed by a softmax function.
+
+Source: Page 5, Line 42-46",,0.5,0.3478,0.3333,0.8227,0.9636,0.8876
+21,BERT,What does BERT stand for?,Bidirectional Encoder Representations from Transformers.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+BERT stands for Bidirectional Encoder Representations from Transformers.
+
+Source: Page 1, Line 6-8",,0.3846,0.3333,0.3846,0.8058,0.9133,0.8562
+22,BERT,What is the key difference between BERT and GPT?,BERT is deeply bidirectional — it attends to both left and right context simultaneously. GPT is left-to-right only.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+The key difference is that GPT uses a left-to-right, unidirectional Transformer language model, while BERT uses a bidirectional approach enabled by a masked language model pre-training objective.
+
+Source: Page 1, Line 62-83; Page 14, Line 18-30",,0.209,0.0615,0.1791,0.8157,0.8889,0.8507
+23,BERT,What are BERT's two pre-training objectives?,Masked Language Modeling (MLM) and Next Sentence Prediction (NSP).,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context. The context identifies one pre-training objective, the masked language model (MLM), and states that BERT uses two unsupervised tasks, but it does not provide the second objective.
+
+Source: Page 4, Line 30-42; Page 1, Line 74-83",,0.1562,0.129,0.1562,0.7978,0.8742,0.8343
+24,BERT,How does Masked Language Modeling (MLM) work?,15% of all WordPiece tokens are masked at random; the model predicts the original token from context.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+Masked Language Modeling (MLM) trains a bidirectional representation by randomly selecting some input tokens for prediction. In BERT, 15% of WordPiece token positions are chosen at random. For each chosen token, the input is replaced with the `[MASK]` token 80% of the time, a random token 10% of the time, and left unchanged 10% of the time. The model then uses the final hidden vector for that position to predict the original token with an output softmax over the vocabulary and cross-entropy loss. MLM predicts only the selected masked tokens, not the entire input.
+
+Source: Page 4, Line 50-78; Page 1, Line 80-87",,0.2154,0.1094,0.2,0.807,0.9064,0.8538
+25,BERT,What is the Next Sentence Prediction (NSP) task?,"The model receives two sentences and predicts whether the second follows the first in the original document (50% positive, 50% random).","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+Next Sentence Prediction (NSP) is a binary pre-training task used to train BERT to understand relationships between two sentences. For each example, sentence B is either the actual next sentence following sentence A 50% of the time, labeled “IsNext,” or a random sentence from the corpus 50% of the time, labeled “NotNext.”
+
+Source: Page 4, Line 82-99",,0.2529,0.0235,0.1609,0.8115,0.8624,0.8362
+26,BERT,What are the two model sizes in BERT?,"BERT-Base (L=12, H=768, A=12, 110M params) and BERT-Large (L=24, H=1024, A=16, 340M params).","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+The two model sizes in BERT are BERTBASE (L=12, H=768, A=12, 110M parameters) and BERTLARGE (L=24, H=1024, A=16, 340M parameters).
+
+Source: Page 3, Line 75-80",,0.5667,0.4138,0.5333,0.872,0.952,0.9102
+27,BERT,What pre-training corpus does BERT use?,"BooksCorpus (800M words) and English Wikipedia (2,500M words).","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context. The context only states that BERT is pre-trained on unlabeled text/data, but it does not name the specific pre-training corpus.
+
+Source: Page 3, Line 35-39",,0.0,0.0,0.0,0.7787,0.8033,0.7908
+28,BERT,What is the [CLS] token used for?,It is prepended to every input; its final hidden state is used as the aggregate sequence representation for classification tasks.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+The provided context shows [CLS] as part of BERT’s input representation, and states that the vector C is used for next sentence prediction (NSP). It does not explicitly state more about the [CLS] token itself.
+
+Source: Page 4, Line 95; Page 5, Line 1-4",,0.2466,0.0282,0.137,0.8018,0.8638,0.8317
+29,BERT,What GLUE score does BERT-Large achieve?,"80.5%, a 7.7% absolute improvement over the prior state of the art.","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+BERT-Large achieves an official GLUE leaderboard score of 80.5.
+
+Source: Page 6, Lines 31-35",,0.1579,0.0556,0.1053,0.7967,0.855,0.8248
+30,BERT,What F1 score does BERT-Large achieve on SQuAD v1.1?,"93.2 F1, surpassing human-level performance.","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+BERT-Large (Single) achieves an F1 score of 90.9 on the SQuAD v1.1 dev set. The test F1 is not reported for this row.
+
+Source: Page 7, Lines 1-19",,0.0435,0.0,0.0435,0.7942,0.864,0.8276
+31,BERT,What is fine-tuning in the context of BERT?,Starting from pre-trained BERT parameters and training end-to-end on a labeled downstream task with an added output layer.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+Fine-tuning in BERT means taking the pre-trained BERT model, plugging in task-specific inputs and outputs, and training all parameters end-to-end for a downstream NLP task. For token-level tasks like question answering or sequence tagging, token representations are fed to an output layer; for classification tasks like entailment or sentiment analysis, the [CLS] representation is fed to an output layer.
+
+Source: Page 5, Line 41-85",,0.303,0.1237,0.2828,0.8301,0.912,0.8691
+32,BERT,What is the difference between feature-based and fine-tuning approaches?,Fine-tuning adjusts all pre-trained parameters; feature-based uses fixed pre-trained representations as features in a task-specific architecture.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+Feature-based approaches use pre-trained representations as fixed features; the model “will not have the chance to adjust the representations.” In the BERT example, the feature-based approach concatenates the last 4 layers of BERT as features. Fine-tuning approaches instead take pre-trained contextual token representations and fine-tune them for a supervised downstream task.
+
+Source: Page 16, Lines 53-86; Page 2, Lines 78-98",,0.3542,0.1489,0.2292,0.8276,0.9047,0.8644
+33,BERT,What WordPiece vocabulary size does BERT use?,"30,000 token vocabulary.","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context. The context mentions WordPiece tokenization but does not state the WordPiece vocabulary size.
+
+Source: Page 13, Line 58-60",,0.1026,0.0,0.1026,0.7878,0.8649,0.8245
+34,BERT,How long did it take to pre-train BERT?,4 days to complete pre-training.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+Each BERT pre-training took 4 days to complete.
+
+Source: Page 13, Lines 76-80",,0.4286,0.3077,0.2857,0.8092,0.926,0.8637
+35,BERT,What ablation study is done on pre-training objectives?,"Models are compared with and without NSP (No NSP) and with a left-to-right LM instead of MLM, showing both objectives contribute.","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+The ablation study compares BERTBASE pre-trained with the Masked Language Model (MLM) objective against BERTBASE pre-trained left-to-right (LTR), evaluating MNLI Dev accuracy after fine-tuning from checkpoints trained for different numbers of pre-training steps. It finds that MLM converges slightly slower than LTR, but begins to outperform LTR in absolute accuracy almost immediately.
+
+Source: Page 16, Lines 4-22; Page 16, Lines 34-44",,0.1818,0.0412,0.1414,0.7985,0.8541,0.8253
+36,BERT,How does BERT handle the mismatch between [MASK] at pre-training and real tokens at fine-tuning?,"Of the 15% selected tokens: 80% replaced with [MASK], 10% random token, 10% unchanged.","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context. The context states that BERT uses a masked language model (MLM) pre-training objective, but it does not explain how BERT handles the mismatch between [MASK] tokens during pre-training and real tokens during fine-tuning.
+
+Source: Page 1, Line 74-83; Page 4, Line 33-42",,0.1039,0.0,0.0779,0.7999,0.8235,0.8116
+37,BERT,What is the maximum sequence length BERT supports?,512 tokens.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+BERT supports a maximum sequence length of 512 tokens.
+
+Source: Page 13, Line 56-58",,0.1667,0.0909,0.1667,0.7903,0.932,0.8553
+38,BERT,What F1 does BERT-Large achieve on CoNLL-2003 NER?,92.8 F1.,"Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+BERT-Large achieves 96.6 Dev F1 and 92.8 Test F1 on CoNLL-2003 NER.
+
+Source: Page 9, Line 39-89",,0.1875,0.0667,0.1875,0.7943,0.9075,0.8471
+39,BERT,What learning rates are searched for fine-tuning?,"5e-5, 4e-5, 3e-5, and 2e-5; best is chosen on the Dev set.","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+The fine-tuning learning rates searched are 5e-5, 3e-5, and 2e-5.
+
+Source: Page 14, Line 1",,0.381,0.3,0.3333,0.8278,0.8938,0.8595
+40,BERT,What linguistic phenomena do BERT's attention heads learn?,"Different heads capture different linguistic properties (syntactic relations, sentence boundaries, etc.).","Paper: 1810.04805v2-BERT_Transformers.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context.
+
+Source: Page 1, Line 43-83",,0.0,0.0,0.0,0.7776,0.8118,0.7944
+41,RAG,What is the core idea of RAG?,RAG combines a pre-trained seq2seq model (parametric memory) with a dense vector index of Wikipedia (non-parametric memory) to generate grounded answers.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+The core idea of RAG is to combine a pre-trained seq2seq generator with retrieved documents as non-parametric memory, so the model conditions on both the input and relevant retrieved documents to generate outputs. This combines the flexibility of generation-based “closed-book” approaches with the performance benefits of “open-book” retrieval-based approaches.
+
+Source: Page 2, Line 55-66; Page 5, Line 41-43",,0.3093,0.1474,0.2474,0.8219,0.8938,0.8564
+42,RAG,What retriever does RAG use?,"Dense Passage Retriever (DPR), which uses BERT-based encoders for queries and documents and retrieves top-K by maximum inner product search.","Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+RAG uses a retriever based on DPR (Dense Passage Retrieval), specifically a pre-trained DPR bi-encoder initialized to retrieve documents for TriviaQA and Natural Questions.
+
+Source: Page 3, Line 34-48",,0.3548,0.0667,0.2258,0.8161,0.8607,0.8378
+43,RAG,What are the two RAG formulations?,RAG-Sequence (same retrieved document for the full answer) and RAG-Token (different documents per generated token).,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context.
+
+Source: Page 2, Line 78-84",,0.2,0.0,0.15,0.7973,0.8223,0.8096
+44,RAG,What document corpus does RAG use?,"Wikipedia split into disjoint 100-word chunks, totalling 21M documents, indexed with FAISS.","Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+RAG uses Wikipedia as its document corpus.
+
+Source: Page 17, Line 24-26",,0.1176,0.0,0.1176,0.8055,0.8331,0.8191
+45,RAG,How many documents does RAG retrieve per query?,Top-K documents; K=5 is used in most experiments.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+RAG retrieves either 5 or 10 latent documents during training, and the number of retrieved documents can be adjusted at test time.
+
+Source: Page 8, Lines 25-32",,0.087,0.0,0.0435,0.8142,0.8519,0.8326
+46,RAG,What generative model does RAG use?,BART-large.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+RAG uses a generator model \(p_\theta(y_i \mid x, z, y_{1:i-1})\), which generates each current token based on the previous tokens, the original input \(x\), and a retrieved passage \(z\).
+
+Source: Page 2, Lines 80-85; Page 3, Lines 1-3",,0.0,0.0,0.0,0.7601,0.858,0.8061
+47,RAG,What Exact Match score does RAG achieve on Natural Questions?,44.5 EM (RAG-Sequence).,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context.
+
+Source: Page 5, Line 41-52",,0.1429,0.0,0.0714,0.798,0.8476,0.822
+48,RAG,Can RAG's knowledge be updated without retraining?,Yes — the non-parametric memory can be replaced to update the models' knowledge without retraining the model parameters.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+The paper states that RAG’s non-parametric memory can be replaced to update the model’s knowledge as the world changes. However, the provided context does not explicitly say whether this happens without retraining.
+
+Source: Page 2, Line 74-75",,0.4478,0.3077,0.4179,0.8421,0.9425,0.8894
+49,RAG,What is 'Closed-Book QA' and how does RAG compare?,Closed-Book QA relies entirely on model parameters with no retrieval. RAG outperforms it by grounding answers in retrieved documents.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+“Closed-Book QA” refers to parametric-only approaches. RAG combines the generation flexibility of these closed-book approaches with the performance of open-book retrieval-based approaches. It sets a new state of the art on some tasks and achieves strong results without expensive specialized “salient span masking” pre-training. RAG also compares favorably to the DPR QA system and shows that neither a re-ranker nor an extractive reader is necessary for state-of-the-art performance.
+
+Source: Page 5, Line 41-52",Question not found in the ground truth dataset.,,,,,,
+50,RAG,What open-domain QA datasets are used for evaluation?,"Natural Questions, WebQuestions, CuratedTrec, and TriviaQA.","Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+The open-domain QA datasets mentioned are Natural Questions, WebQuestions, TriviaQA, and CuratedTrec. For TriviaQA evaluation specifically, the paper uses the public TriviaQA Web Development split.
+
+Source: Page 18, Line 1-21",,0.2609,0.0909,0.2174,0.8235,0.927,0.8722
+51,RAG,What is hallucination and why is it a problem?,Parametric-only models may 'hallucinate' plausible but incorrect facts. RAG mitigates this by conditioning on retrieved text.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context for a full definition. The context only indicates that “hallucination” is associated with model generations being less factual, and that it is a problem because less hallucination leads to generations that are more factual, with more control and interpretability.
+
+Source: Page 10, Line 1-5",,0.1266,0.0,0.0759,0.8077,0.8497,0.8282
+52,RAG,What vector search library is used to index the passages?,FAISS (Facebook AI Similarity Search) with a Hierarchical Navigable Small World index.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+FAISS is used as the vector search library to index the passages.
+
+Source: Page 17, Line 24-34",,0.1579,0.0,0.1579,0.8024,0.8317,0.8168
+53,RAG,What model produces document embeddings in DPR?,A BERT-base document encoder.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+In DPR, document embeddings are produced by a BERTBASE document encoder.
+
+Source: Page 3, Line 39-45",,0.2,0.0714,0.2,0.8262,0.9348,0.8771
+54,RAG,How does RAG compare to BART in output diversity?,RAG generates more diverse outputs — a higher ratio of distinct n-grams to total n-grams compared to BART.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context. The provided text compares RAG and BART on factuality and specificity, but does not state how they compare in output diversity.
+
+Source: Page 6, Line 38-58",,0.1587,0.0,0.0952,0.8127,0.8669,0.8389
+55,RAG,What is the FEVER task and how does RAG perform?,FEVER is a fact verification task. RAG achieves competitive results with pipelines using full Wikipedia retrieval.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+FEVER is a fact verification task. RAG performs within 4.3% of state-of-the-art pipeline models on FEVER 3-way classification, despite those models using strong or intermediate retrieval supervision and substantial domain-specific engineering, which RAG does not require.
+
+Source: Page 6, Line 59-63; Page 2, Line 74-76",,0.2597,0.16,0.2597,0.814,0.9,0.8548
+56,RAG,What metric is used to evaluate open-domain QA?,Exact Match (EM) — whether the predicted string exactly matches the gold answer.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context.
+
+Source: Page 18, Line 17-21; Page 5, Line 38-42",,0.1,0.0,0.05,0.7784,0.8096,0.7937
+57,RAG,Can RAG's knowledge index be updated without retraining?,Yes — the non-parametric memory can be replaced to update the models' knowledge without retraining.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+Yes. RAG’s non-parametric memory allows its knowledge index to be easily updated at test time, unlike parametric-only models such as T5 or BART, which need further training to update their behavior.
+
+Source: Page 7, Line 78-80",,0.2857,0.0984,0.2222,0.8373,0.9159,0.8749
+58,RAG,What happens when the correct answer is not in any retrieved document?,The model achieves 11.8% accuracy in those cases — it can sometimes answer from parametric memory alone.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+Even if the correct answer is not contained verbatim in any retrieved document, retrieved documents that provide clues can still help RAG generate the correct answer. This is not possible with standard extractive approaches.
+
+Source: Page 5, Line 49-52",,0.1231,0.0,0.1231,0.8143,0.8678,0.8402
+59,RAG,What TriviaQA score does RAG-Sequence achieve?,56.8 EM on open-domain TriviaQA.,"Paper: 2005.11401v4-RAG_for_NLP.pdf
+
+Answer:
+I DO NOT KNOW based on the provided context.
+
+Source: Page 5, Line 41-52",,0.0667,0.0,0.0667,0.7952,0.8495,0.8214

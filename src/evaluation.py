@@ -1,8 +1,14 @@
 import os
+import logging
 import pandas as pd
 from rouge_score import rouge_scorer
+from bert_score import BERTScorer
 
-CSV_PATH = "pdf_qa_eval_dataset_final.csv"
+logging.getLogger("transformers").setLevel(logging.ERROR)
+
+CSV_PATH = os.path.join(os.path.dirname(__file__), "..", "pdf_qa_eval_dataset_final.csv")
+
+_bert_scorer = BERTScorer(lang="en")
 
 def load_ground_truth(csv_path=CSV_PATH):
     """Loads the ground truth dataset containing questions and golden answers."""
@@ -17,7 +23,7 @@ def load_ground_truth(csv_path=CSV_PATH):
 def evaluate_response(user_question: str, generated_answer: str) -> dict:
     """
     Compares the generated answer against the golden answer from the dataset.
-    Returns a dictionary with ROUGE-1 and ROUGE-2 scores.
+    Returns a dictionary with ROUGE-1, ROUGE-2 and BERTScore scores.
     """
     df = load_ground_truth()
     if df is None:
@@ -38,9 +44,15 @@ def evaluate_response(user_question: str, generated_answer: str) -> dict:
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
     rouge_results = scorer.score(golden_answer, generated_answer)
 
+    # BERTScore
+    P, R, F1 = _bert_scorer.score([generated_answer], [golden_answer])
+
     return {
-        "rouge1": rouge_results['rouge1'].fmeasure,
-        "rouge2": rouge_results['rouge2'].fmeasure,
-        "rougeL": rouge_results['rougeL'].fmeasure,
-        "golden_answer": golden_answer
+        "rouge1":         rouge_results['rouge1'].fmeasure,
+        "rouge2":         rouge_results['rouge2'].fmeasure,
+        "rougeL":         rouge_results['rougeL'].fmeasure,
+        "bert_precision": P[0].item(),
+        "bert_recall":    R[0].item(),
+        "bert_f1":        F1[0].item(),
+        "golden_answer":  golden_answer
     }
