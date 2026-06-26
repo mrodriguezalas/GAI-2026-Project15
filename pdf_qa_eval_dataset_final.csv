@@ -54,7 +54,7 @@ What vector search library is used to index the passages?,2005.11401v4-RAG.pdf,F
 What model produces document embeddings in DPR?,2005.11401v4-RAG.pdf,A BERT-base document encoder.,3.0,45.0
 How does RAG compare to BART in output diversity?,2005.11401v4-RAG.pdf,RAG generates more diverse outputs — a higher ratio of distinct n-grams to total n-grams compared to BART.,7.0,64.0
 What is the FEVER task and how does RAG perform?,2005.11401v4-RAG.pdf,FEVER is a fact verification task. RAG achieves competitive results with pipelines using full Wikipedia retrieval.,2.0,74.0
-What is the embedding dimension used by DPR?,2005.11401v4-RAG.pdf,768 dimensions (BERT-base hidden size). *(Note: not stated explicitly in this paper; see DPR paper arXiv:2004.04906.)*,,
+What is the embedding dimension used by DPR?,2005.11401v4-RAG.pdf,728 dimensional vectors,19.0,15
 What metric is used to evaluate open-domain QA?,2005.11401v4-RAG.pdf,Exact Match (EM) — whether the predicted string exactly matches the gold answer.,4.0,45.0
 Can RAG's knowledge index be updated without retraining?,2005.11401v4-RAG.pdf,Yes — the non-parametric memory can be replaced to update the models' knowledge without retraining.,2.0,76.0
 What happens when the correct answer is not in any retrieved document?,2005.11401v4-RAG.pdf,The model achieves 11.8% accuracy in those cases — it can sometimes answer from parametric memory alone.,6.0,26.0

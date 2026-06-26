@@ -86,7 +86,7 @@ Papers used:
 | 13 | What model produces document embeddings in DPR? | A BERT-base document encoder. | 3 | 45 |
 | 14 | How does RAG compare to BART in output diversity? | RAG generates more diverse outputs — a higher ratio of distinct n-grams to total n-grams compared to BART. | 7 | 64 |
 | 15 | What is the FEVER task and how does RAG perform? | FEVER is a fact verification task. RAG achieves competitive results with pipelines using full Wikipedia retrieval. | 2 | 74 |
-| 16 | What is the embedding dimension used by DPR? | 768 dimensions (BERT-base hidden size). *(Note: not stated explicitly in this paper; see DPR paper arXiv:2004.04906.)* | N/A | N/A |
+| 16 | What is the embedding dimension used by DPR? | 728 dimensional vectors | 19 | 15 |
 | 17 | What metric is used to evaluate open-domain QA? | Exact Match (EM) — whether the predicted string exactly matches the gold answer. | 4 | 45 |
 | 18 | Can RAG's knowledge index be updated without retraining? | Yes — the non-parametric memory can be replaced to update the models' knowledge without retraining. | 2 | 76 |
 | 19 | What happens when the correct answer is not in any retrieved document? | The model achieves 11.8% accuracy in those cases — it can sometimes answer from parametric memory alone. | 6 | 26 |
