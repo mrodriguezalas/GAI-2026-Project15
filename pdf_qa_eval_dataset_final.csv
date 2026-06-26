@@ -47,7 +47,7 @@ How many documents does RAG retrieve per query?,2005.11401v4-RAG.pdf,Top-K docum
 What generative model does RAG use?,2005.11401v4-RAG.pdf,BART-large.,2.0,55.0
 What Exact Match score does RAG achieve on Natural Questions?,2005.11401v4-RAG.pdf,44.5 EM (RAG-Sequence).,6.0,15.0
 Can RAG's knowledge be updated without retraining?,2005.11401v4-RAG.pdf,Yes — the non-parametric memory can be replaced to update the models' knowledge without retraining the model parameters.,2.0,76.0
-"What is ""Closed-Book QA"" and how does RAG compare?",2005.11401v4-RAG.pdf,Closed-Book QA relies entirely on model parameters with no retrieval. RAG outperforms it by grounding answers in retrieved documents.,4.0,40.0
+What is Closed-Book QA and how does RAG compare?,2005.11401v4-RAG.pdf,Closed-Book QA relies entirely on model parameters with no retrieval. RAG outperforms it by grounding answers in retrieved documents.,4.0,40.0
 What open-domain QA datasets are used for evaluation?,2005.11401v4-RAG.pdf,"Natural Questions, WebQuestions, CuratedTrec, and TriviaQA.",2.0,69.0
 What is hallucination and why is it a problem?,2005.11401v4-RAG.pdf,"Parametric-only models may ""hallucinate"" plausible but incorrect facts. RAG mitigates this by conditioning on retrieved text.",1.0,35.0
 What vector search library is used to index the passages?,2005.11401v4-RAG.pdf,FAISS (Facebook AI Similarity Search) with a Hierarchical Navigable Small World index.,4.0,31.0
