@@ -171,7 +171,7 @@ user_query = st.text_input(
     placeholder="e.g., What problem does the Transformer solve compared to RNNs?"
 )
 
-num_results = st.slider("Number of results to return from RAG:", min_value=1, max_value=5, value=2)
+num_results = st.slider("Number of results to return from RAG:", min_value=1, max_value=5, value=5)
 
 if user_query:
     # 1. Step 1: Search and retrieve context chunks using your existing script
@@ -243,6 +243,7 @@ if user_query:
                     m4.metric("BERT-P",  f"{gen_eval_results['bert_precision']:.3f}")
                     m5.metric("BERT-R",  f"{gen_eval_results['bert_recall']:.3f}")
                     m6.metric("BERT-F1", f"{gen_eval_results['bert_f1']:.3f}")
+                show_evidence_check(top_hits[0], generated_answer)
 
             except Exception as e:
                 st.error(f"An error occurred while running LangChain: {e}")
